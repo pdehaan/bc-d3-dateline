@@ -1,0 +1,13 @@
+{
+  "name": "bc-d3-dateline",
+  "version": "0.1.0",
+  "keywords": "d3, dateline, timeline, chart, polymer, web-components",
+  "main": "bc-d3-dateline.html",
+  "dependencies": {
+    "bc-d3-chart": "bilgecode/bc-d3-chart#~0.2.0",
+    "jquery": "jquery/jquery#1.9.1",
+    "polymer": "Polymer/polymer#~0.3.1",
+    "timezone-js": "mde/timezone-js#0.4.11",
+    "tz": "eggert/tz"
+  }
+}
