@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>bc-d3-dateline Demo</title>
+
+  <script src="../platform/platform.js"></script>
+  <script src="../jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../timezone-js/src/date.js"></script>
+  <script>
+
+  </script>
+
+  <link rel="import" href="bc-d3-dateline.html">
+
+  <style>
+    html {
+      background-color: #333;
+      color: white;
+      padding: 40px;
+    }
+    a, a:visited {
+      color: steelblue;
+    }
+  </style>
+
+</head>
+<body unresolved>
+
+  <p>A `bc-d3-dateline` looks like this:</p>
+
+  <template is="auto-binding" id="demo-container">
+
+    <button onClick="bump()">Bump</button>
+    <button onClick="swapTimezone()">{{timezone}}</button>
+
+    <bc-d3-dateline
+      height="30"
+      width="700"
+      centerline="{{centerline}}"
+      debug="{{debug}}"
+      dateformat="%a%H:%M"
+      timezone="{{timezone}}"
+      domain="{{domain}}"></bc-d3-dateline>
+
+    <h2>Domain Property:</h2>
+    <dl>
+      <dt>Start:</dt>
+      <dd>{{domain[0]}}</dd>
+      <dt>End:</dt>
+      <dd>{{domain[1]}}</dd>
+    </dl>
+
+    <p>
+      <a href="index.html">documentation</a> |
+      <a href="https://github.com/BilgeCode/bc-d3-dateline">github</a>
+    </p>
+  </template>
+
+  <script>
+
+    timezoneJS.timezone.zoneFileBasePath = '../tz';
+    timezoneJS.timezone.defaultZoneFile = ['northamerica'];
+    timezoneJS.timezone.loadingScheme = timezoneJS.timezone.loadingSchemes.PRELOAD_ALL;
+    timezoneJS.timezone.init({async: false});
+
+    var template = document.getElementById('demo-container');
+    template.debug = true;
+    template.centerline = true;
+    template.timezone = "Pacific/Auckland";
+    template.domain = [
+      new timezoneJS.Date(new Date(2014, 7, 25), template.timezone),
+      new timezoneJS.Date(new Date(2014, 8, 2), template.timezone)
+    ];
+
+    function bump() {
+      console.log(template.domain);
+      var newDomain = [
+        new Date(template.domain[0]),
+        new Date(template.domain[1])
+      ];
+      newDomain[0].setDate(newDomain[0].getDate() + 1);
+      newDomain[1].setDate(newDomain[1].getDate() + 1);
+
+      // newDomain = [
+      //   new timezoneJS.Date(newDomain[0], template.timezone),
+      //   new timezoneJS.Date(newDomain[1], template.timezone)
+      // ]
+
+      template.domain = convertDomain(newDomain);
+      console.log(template.domain);
+    }
+
+    function convertDomain(d) {
+      return [
+        new timezoneJS.Date(d[0], template.timezone),
+        new timezoneJS.Date(d[1], template.timezone)
+      ];
+    }
+
+    function swapTimezone() {
+      if(template.timezone == 'Pacific/Auckland') {
+        template.timezone = 'Europe/London';
+      }
+      else {
+        template.timezone = 'Pacific/Auckland';
+      }
+      template.domain = convertDomain(template.domain);
+    }
+  </script>
+
+</body>
+</html>

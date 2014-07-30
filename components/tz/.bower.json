@@ -1,0 +1,13 @@
+{
+  "name": "tz",
+  "homepage": "https://github.com/eggert/tz",
+  "_release": "87163d184d",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "87163d184d7cc0c704d2b505adcfb23528203951"
+  },
+  "_source": "git://github.com/eggert/tz.git",
+  "_target": "*",
+  "_originalSource": "eggert/tz"
+}

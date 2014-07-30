@@ -1,0 +1,215 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../bc-d3-chart/bc-d3-chart.html">
+
+<!--
+Element providing a dateline for a given domain, with timezone support
+
+##### Example
+
+    <bc-d3-dateline
+      domain={{domain}}
+      timezone="America/New_York"></bc-d3-dateline>
+
+@element bc-d3-dateline
+@blurb Element providing a dateline for a given domain, with timezone support
+@status alpha
+@homepage http://bilgecode.github.io/bc-d3-dateline
+-->
+<polymer-element
+  name="bc-d3-dateline"
+  extends="bc-d3-chart"
+  attributes="timezone dateformat">
+
+  <template>
+    <link rel="stylesheet" href="bc-d3-dateline.css" />
+    <shadow></shadow>
+  </template>
+
+  <script src="../jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="../timezone-js/src/date.js"></script>
+  <script>
+    timezoneJS.timezone.zoneFileBasePath = '../tz';
+    timezoneJS.timezone.init();
+  </script>
+
+  <script>
+
+    Polymer('bc-d3-dateline', {
+      /**
+       * The `dateformat` attribute provides the format of each date in line
+       *
+       * @attribute dateformat
+       * @type string
+       */
+      dateformat: "%a",
+
+      /**
+       * The `domain` attribute provides the start and end dates for the line
+       *
+       * @attribute domain
+       * @type {Array} d3.domain date array.
+       */
+
+      /**
+       * The `height` attribute provides the height in pixels
+       *
+       * @attribute height
+       * @type int
+       */
+
+      /**
+       * The optional `timezone` attribute provides timezone support for this
+       * element. `bc-d3-dateline` uses timezone-js to localize the dates.
+       *
+       * @attribute timezone
+       * @type string
+       */
+      timezone: null,
+
+      /**
+       * The `width` attribute provides the width in pixels
+       *
+       * @attribute width
+       * @type int
+       */
+
+      /**
+      * The `graphCreated` property indicates if the graph has been initialized
+      *
+      * @property graphCreated
+      * @type bool
+      */
+      graphCreated: false,
+
+      /**
+       * The `xAxis` property stores the d3 axis
+       *
+       * @property xAxis
+       * @type {Object} d3.axis
+       */
+      xAxis: null,
+
+      /**
+       * The `yAxisWidth` property defines the width of the y axis. Defaults to
+       * 5 because there's no real need for a y-axis
+       *
+       * @property aProp
+       * @type bool
+       */
+      yAxisWidth: 5,
+
+      /**
+       * The `clearGraph` method removes the axes so they can be recreated
+       *
+       * @method clearGraph
+       * @return {Object} Returns undefined.
+       */
+      clearGraph: function() {
+        this.chartContainer.selectAll(".axis").remove();
+      },
+
+      /**
+       * The `createGraph` method creates all the parts and pieces
+       *
+       * @method createGraph
+       * @return {Object} Returns undefined.
+       */
+       createGraph: function() {
+
+        this.log("DRAWING CHART");
+        this.log("width" + this.width);
+        this.log("height" + this.height);
+
+        this.clearGraph();
+
+        // set the chart dimensions
+        this.chartContainer = d3.select(this.$.chart)
+          .attr("width", this.width)
+          .attr("height", this.height);
+
+        this.updateScales();
+
+        this.xAxis = d3.svg.axis()
+          .scale(this.xScale)
+          .orient("bottom")
+          .ticks(5)
+          .tickFormat(this.formatXAxis());
+        this.chartContainer.append("g")
+          .attr("class", "x axis top")
+          .attr("transform", "translate(0,0)")
+          .call(this.xAxis);
+
+        if(this.centerline) {
+          this.drawCenterLine();
+        }
+
+        this.graphCreated = true;
+
+        this.updateGraph();
+      },
+
+      /**
+       * The `formatXAxis` provides localized formatting of the x-axis
+       *
+       * @method formatXAxis
+       * @return {Object} Returns undefined.
+       */
+      formatXAxis: function() {
+        var self = this;
+        return function(d) {
+          var newD = new Date(d);
+          if(self.timezone != undefined && self.timezone != null) {
+            newD = new timezoneJS.Date(d, self.timezone);
+          }
+          // @todo: optimize by storing on the object
+          var f = d3.time.format(self.dateformat);
+          return f(newD);
+        }
+      },
+
+      /**
+       * The `getXDomain` method just defaults to the domain attribute provided.
+       * This defines the domain of the dates in the timeline.
+       *
+       * @method getXDomain
+       * @return {Array} d3.domain date array.
+       */
+      getXDomain: function() {
+        return this.domain;
+      },
+
+      /**
+       * The `getYDomain` method just defaults [0,1] becaus the y-axis is not used.
+       *
+       * @method getYDomain
+       * @return {Array} d3.domain value array.
+       */
+      getYDomain: function() {
+        return [0,1];
+      },
+
+      /**
+       * The `updateGraph` method resets the x-axis and scales
+       *
+       * @method updateGraph
+       * @return {Object} Returns undefined.
+       */
+      updateGraph: function() {
+        this.log("Updating Graph.");
+
+        if(!this.graphCreated) {
+          this.createGraph();
+        }
+        
+        this.updateScales();
+
+        this.xAxis.scale(this.xScale);
+        this.chartContainer.selectAll("g.x")
+          .call(this.xAxis);
+      }
+
+    });
+
+  </script>
+
+</polymer-element>

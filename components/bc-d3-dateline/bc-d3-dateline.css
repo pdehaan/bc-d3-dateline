@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  color: red;
+}
+
+:host::shadow .chartContainer {
+  background-color: steelblue;
+  border: 2px solid #ffffff;
+  margin: 0px;
+}
+
+:host::shadow .centerline {
+  stroke: red;
+/*      stroke-width: 3px;
+  opacity: .5;*/
+}
+
+:host::shadow .axis path, :host::shadow .axis line {
+  fill: none;
+	stroke: white;
+ 	shape-rendering: crispEdges;
+}
+
+:host::shadow g.context g.axis path {
+	stroke-opacity: 1;
+}
+
+:host::shadow g.context g.axis line {
+	stroke-opacity: 1;
+}
+
+:host::shadow g.tick text {
+  fill: white;
+  font-size: 1.1em;
+}

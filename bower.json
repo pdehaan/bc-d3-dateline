@@ -1,0 +1,7 @@
+{
+  "name": "bc-d3-dateline#gh-pages",
+  "private": true,
+  "dependencies": {
+    "bc-d3-dateline": "bilgecode/bc-d3-dateline#master"
+  }
+}
