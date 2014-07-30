@@ -8,4 +8,5 @@ See the [component page](http://bilgecode.github.io/bc-d3-dateline) for more inf
 ## Related components
 
 [bc-d3-areachart](http://bilgecode.github.io/bc-d3-areachart)
+
 [bc-d3-datebrush](http://bilgecode.github.io/bc-d3-datebrush)
