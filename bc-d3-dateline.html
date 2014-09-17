@@ -27,10 +27,6 @@ Element providing a dateline for a given domain, with timezone support
 
   <script src="../jquery/jquery.min.js"></script>
   <script type="text/javascript" src="../timezone-js/src/date.js"></script>
-  <script>
-    timezoneJS.timezone.zoneFileBasePath = '../tz';
-    timezoneJS.timezone.init();
-  </script>
 
   <script>
 
@@ -97,6 +93,15 @@ Element providing a dateline for a given domain, with timezone support
        * @type bool
        */
       yAxisWidth: 5,
+
+      created: function() {
+        this.super();
+        if(timezoneJS.timezone.zoneFileBasePath == undefined) {
+          // no need to re-init if it's already been done.
+          timezoneJS.timezone.zoneFileBasePath = this.resolvePath('../tz');
+          timezoneJS.timezone.init();
+        }
+      },
 
       /**
        * The `clearGraph` method removes the axes so they can be recreated

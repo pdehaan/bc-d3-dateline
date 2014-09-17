@@ -9,12 +9,6 @@
   margin: 0px;
 }
 
-:host::shadow .centerline {
-  stroke: red;
-/*      stroke-width: 3px;
-  opacity: .5;*/
-}
-
 :host::shadow .axis path, :host::shadow .axis line {
   fill: none;
 	stroke: white;
