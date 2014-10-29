@@ -1,7 +1,7 @@
 {
   "name": "bc-d3-dateline",
   "version": "0.4.0",
-  "keywords": "d3, dateline, timeline, chart, polymer, web-components",
+  "keywords": ["d3", "dateline", "timeline", "chart", "polymer", "web-components"],
   "main": "bc-d3-dateline.html",
   "dependencies": {
     "bc-d3-chart": "bilgecode/bc-d3-chart#0.4.0",
